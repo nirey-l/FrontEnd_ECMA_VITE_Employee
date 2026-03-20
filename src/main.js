@@ -1,60 +1,47 @@
-import './style.css'
-import javascriptLogo from './assets/javascript.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import { setupCounter } from './counter.js'
+/**
+ * @file src/main.js
+ * @description
+ * Vite 프로젝트의 단일 엔트리 포인트(진입점)입니다.
+ *
+ * ┌─────────────────────────────────────────────────────────────┐
+ * │  기존(v2.0) index.html 의 <script> 태그 2개를              │
+ * │  이 파일 하나로 통합합니다.                                 │
+ * │                                                             │
+ * │  기존:                                                      │
+ * │    <link rel="stylesheet" href="css/style.css">             │
+ * │    <script type="module" src="js/dept_runner_v2.js">        │
+ * │    <script type="module" src="js/emp_runner_v2.js">         │
+ * │                                                             │
+ * │  Vite 방식:                                                 │
+ * │    <script type="module" src="/src/main.js">   ← 이 파일   │
+ * │    (CSS import, JS import 모두 이 파일에서 처리)            │
+ * └─────────────────────────────────────────────────────────────┘
+ *
+ * Vite가 이 파일을 읽어서:
+ *   1. CSS → <style> 태그로 주입 (개발) / 별도 .css 파일로 추출 (빌드)
+ *   2. JS  → 번들링 및 트리쉐이킹(tree-shaking) 처리
+ */
 
-document.querySelector('#app').innerHTML = `
-<section id="center">
-  <div class="hero">
-    <img src="${heroImg}" class="base" width="170" height="179">
-    <img src="${javascriptLogo}" class="framework" alt="JavaScript logo"/>
-    <img src=${viteLogo} class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/main.js</code> and save to test <code>HMR</code></p>
-  </div>
-  <button id="counter" type="button" class="counter"></button>
-</section>
+// ──────────────────────────────────────────────────────────────
+// CSS import
+// Vite는 JS에서 CSS를 import 할 수 있습니다.
+// - 개발 서버: <style> 태그로 동적 주입 (HMR 지원)
+// - 프로덕션 빌드: 별도의 .css 파일로 추출
+// ──────────────────────────────────────────────────────────────
+import './style.css';
 
-<div class="ticks"></div>
+// ──────────────────────────────────────────────────────────────
+// 부서 관리 모듈
+// - DepartmentApi 클래스 인스턴스 생성
+// - DOMContentLoaded 이벤트에 초기화 등록
+// - 페이지 로드 시 부서 목록 자동 조회
+// ──────────────────────────────────────────────────────────────
+import './js/dept_runner_v2.js';
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank">
-          <img class="logo" src=${viteLogo} alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-          <img class="button-icon" src="${javascriptLogo}" alt="">
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-      <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-      <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-      <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-    </ul>
-  </div>
-</section>
-
-<div class="ticks"></div>
-<section id="spacer"></section>
-`
-
-setupCounter(document.querySelector('#counter'))
+// ──────────────────────────────────────────────────────────────
+// 직원 관리 모듈
+// - EmployeeApi, DepartmentApi 클래스 인스턴스 생성
+// - window.initEmployeeTab 전역 등록
+//   → index.html의 showTab('emp-section') 클릭 시 호출됩니다.
+// ──────────────────────────────────────────────────────────────
+import './js/emp_runner_v2.js';
